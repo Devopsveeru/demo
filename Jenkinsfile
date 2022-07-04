@@ -6,10 +6,15 @@ pipeline{
             sh "mvn clean package"
         }
     }
-     stage("deploy-dev"){
+    stage("deploy-Apache"){
        steps{
-          sshagent(['deploy']){
-               sh "scp -rp '/home/demo/demo/target/*' demo@13.126.214.247:/home/demo"
+          sshagent(['65.0.127.70']) {
+          sh """
+          scp -o StrictHostKeyChecking=no target/demo.war  
+          demo@65.0.127.70:/opt/tomcat/webapps/
+          ssh demo@65.0.127.70 /opt/tomcat/bin/shutdown.sh
+          ssh demo@65.0.127.70 /opt/tomcat/bin/startup.sh
+           """
           }
         }
     }
