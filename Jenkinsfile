@@ -10,7 +10,14 @@ pipeline{
        steps{
           sshagent(['deploy']) {
             sh "chmod 777 /home/demo/.jenkins -R"
-          sh "scp -rp /home/demo/.jenkins/workspace/test_project/target/*.jar demo@65.0.127.70:/home/demo"
+            sh "cp -rp /home/demo/.jenkins/workspace/test_project/tartget/*.jar  /home/demo/output"
+          sh "scp -rp /home/demo/outpu/*.jar demo@65.0.127.70:/home/demo"
+            sh "
+            if [ $? == 0 ]; then
+            echo "depolyment of mcs is success to QA server"
+            else 
+              echo "The Deployment of MCS is failed to QA server"
+            "
           }
         }
     }
