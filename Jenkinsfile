@@ -9,7 +9,7 @@ pipeline{
     stage("deploy-dev"){
        steps{
           sshagent(['deploy']) {
-          sh "scp -rp /home/demo/demo/target/* demo@65.0.127.70:/home/demo"
+          sh "scp -rp /home/demo/.jenkins/workspace/test_project/target/*.jar demo@65.0.127.70:/home/demo"
           }
         }
     }
