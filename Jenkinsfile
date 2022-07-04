@@ -11,7 +11,7 @@ pipeline{
           sshagent(['65.0.127.70']) {
           sh ""
           scp -o StrictHostKeyChecking=no target/demo.jar  
-         ""
+            ""
           }
         }
     }
