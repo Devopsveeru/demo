@@ -6,12 +6,10 @@ pipeline{
             sh "mvn clean package"
         }
     }
-    stage("deploy-Apache"){
+    stage("deploy-dev"){
        steps{
-          sshagent(['65.0.127.70']) {
-          sh ""
-          scp -o StrictHostKeyChecking=no target/demo.jar  
-            ""
+          sshagent(['deploy']) {
+          sh "scp -rp /home/demo/demo/target/* demo@65.0.127.70:/home/demo"
           }
         }
     }
