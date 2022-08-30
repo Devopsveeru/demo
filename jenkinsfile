@@ -1,0 +1,28 @@
+pipeline{
+  agent any
+  stages{
+    stage("Git Checkout"){
+      steps{
+            git credentialsId: 'github', url: 'https://github.com/Devopsveeru/demo.git'
+           }
+          }
+     stage("Maven Build"){
+       steps{
+            sh "mvn clean package"
+            sh "mv target/*.war target/myweb.war"
+             }
+            }
+     stage("deploy-dev"){
+       steps{
+          sshagent(['tomcat-dev1']) {
+          sh """
+          scp -o StrictHostKeyChecking=no target/myweb.war  
+          ubuntu@127.0.0.1:/opt/tomcat/webapps/
+          ssh ubuntu@127.0.0.1 /opt/tomcat/bin/shutdown.sh
+          ssh ubuntu@127.0.0.1 /opt/tomcat/bin/startup.sh
+           """
+            }
+          }
+        }
+      }
+    }
